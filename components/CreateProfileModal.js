@@ -20,7 +20,7 @@ const CreateProfileModal = ({ isOpen, onClose, onCreate }) => {
         <h3 className="text-2xl font-bold text-gray-800 mb-4">Create New DDP Profile</h3>
         <p className="text-gray-600 mb-6">Enter the name of the learner for this new profile.</p>
         <div className="mb-4">
-          <label htmlFor="learner-name" className="block text-gray-700 text-sm font-bold mb-2">Learner's Name</label>
+          <label htmlFor="learner-name" className="block text-gray-700 text-sm font-bold mb-2">Learner&apos;s Name</label>
           <input
             type="text"
             id="learner-name"
