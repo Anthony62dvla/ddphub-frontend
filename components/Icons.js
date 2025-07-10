@@ -25,7 +25,6 @@ export function UserIcon(props) {
   );
 }
 
-// Added from dashboard.js and profile/[id].js
 export function UserCircleIcon(props) {
   return (
     <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -41,23 +40,6 @@ export function ChevronDownIcon(props) {
     </svg>
   );
 }
-
-export function EditIcon(props) {
-  return (
-    <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" />
-    </svg>
-  );
-}
-
-export function PlusIcon(props) {
-  return (
-    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-    </svg>
-  );
-}
-// Add these at the end of your Icons.js file
 
 export function EditIcon(props) {
   return (
