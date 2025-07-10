@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // Assuming MailIcon and LockIcon are imported from a components folder or an icon library
 // You might need to adjust these imports based on your actual project structure
-import { MailIcon, LockIcon } from '../components/Icons'; // Example: if you have a custom Icons component
+import { MailIcon, LockIcon, UserIcon } from '../components/Icons'; // Example: if you have a custom Icons component
 // Or if using a library like @heroicons/react:
 // import { EnvelopeIcon as MailIcon, LockClosedIcon as LockIcon } from '@heroicons/react/24/outline';
 
