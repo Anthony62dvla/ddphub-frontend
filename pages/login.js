@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+// Assuming MailIcon and LockIcon are imported from a components folder or an icon library
+// You might need to adjust these imports based on your actual project structure
+import { MailIcon, LockIcon } from '../components/Icons'; // Example: if you have a custom Icons component
+// Or if using a library like @heroicons/react:
+// import { EnvelopeIcon as MailIcon, LockClosedIcon as LockIcon } from '@heroicons/react/24/outline';
 
-// ... (previous code remains unchanged)
 
-export default function App() {
+export default function LoginPage() { // Renamed from App to LoginPage for clarity, assuming this is pages/login.js
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -21,41 +25,44 @@ export default function App() {
 
     // --- UPDATED: API Call to the Back-End Login Endpoint ---
     try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(`${apiUrl}/api/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${apiUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(data.message || 'Invalid credentials.');
-        }
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid credentials.');
+      }
 
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
-        window.location.href = '/dashboard';
+      // Redirect on successful login
+      window.location.href = '/dashboard'; // This will cause a full page reload
 
     } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
+      setError(err.message);
+      setIsLoading(false);
+    } finally {
+      // Ensure loading state is reset even on success, before redirect
+      // (though redirect will make this less visible)
+      setIsLoading(false);
     }
   };
 
-  // ... (rest of the component remains unchanged)
-}
-
+  // --- JSX RETURN BLOCK - MUST BE INSIDE THE COMPONENT FUNCTION ---
   return (
     // Main container with a gradient background
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      
+
       <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-xl flex flex-col md:flex-row">
-        
+
         {/* Left Side: Branding and Welcome Message */}
         <div className="w-full md:w-1/2 bg-blue-600 text-white p-8 md:p-12 flex flex-col justify-center items-center md:items-start rounded-t-2xl md:rounded-l-2xl md:rounded-r-none">
           <h1 className="text-3xl font-bold mb-3">The DDP Hub</h1>
@@ -71,7 +78,7 @@ export default function App() {
           <p className="text-gray-600 mb-8">Please enter your details to sign in.</p>
 
           <form onSubmit={handleSubmit}>
-            
+
             {/* Email Input */}
             <div className="mb-6">
               <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
@@ -121,10 +128,10 @@ export default function App() {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
                 ) : 'Sign In'}
               </button>
             </div>
@@ -140,11 +147,12 @@ export default function App() {
                 Don't have an account? <a href="/register" className="font-bold text-blue-500 hover:text-blue-800">Register here</a>.
               </p>
             </div>
-            
+
           </form>
         </div>
-        
+
       </div>
     </div>
   );
+} // <--- End of the LoginPage function
 

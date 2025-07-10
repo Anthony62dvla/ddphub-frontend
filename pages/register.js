@@ -1,66 +1,108 @@
 import React, { useState } from 'react';
+// Assuming MailIcon, LockIcon, UserIcon are imported from a components folder or an icon library.
+// You need to adjust these imports based on your actual project structure.
+// Example: if you have a custom Icons component in '../components/Icons.js'
+import { MailIcon, LockIcon, UserIcon } from '../components/Icons';
+// Or if using a library like @heroicons/react:
+// import { EnvelopeIcon as MailIcon, LockClosedIcon as LockIcon, UserIcon } from '@heroicons/react/24/outline';
 
-// ... (previous code remains unchanged)
 
-export default function App() {
-  // ... (state declarations remain unchanged)
+export default function RegisterPage() { // Renamed from App to RegisterPage for clarity
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('learner');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator on button
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setIsLoading(true); // Start loading state
+    setError('');       // Clear previous errors
+    setSuccess('');     // Clear previous success messages
 
-    // Validation checks remain unchanged
+    // --- Validation checks ---
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      setIsLoading(false);
+      return;
+    }
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      setIsLoading(false);
+      return;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+      setError('Please enter a valid email address.');
+      setIsLoading(false);
+      return;
+    }
+    if (!fullName) {
+      setError('Full Name is required.');
+      setIsLoading(false);
+      return;
+    }
 
-    // --- UPDATED: API Call to the Back-End ---
+
+    // --- API Call to the Back-End Register Endpoint ---
     try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const response = await fetch(`${apiUrl}/api/auth/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                fullName,
-                email,
-                password,
-                role,
-            }),
-        });
+      // Ensure NEXT_PUBLIC_API_URL is set in your Vercel project's environment variables
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      if (!apiUrl) {
+          throw new Error('API URL is not configured. Please set NEXT_PUBLIC_API_URL environment variable.');
+      }
 
-        const data = await response.json();
+      const response = await fetch(`${apiUrl}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName,
+          email,
+          password,
+          role,
+        }),
+      });
 
-        if (!response.ok) {
-            throw new Error(data.message || 'Something went wrong');
-        }
+      const data = await response.json();
 
-        // On success, show a confirmation message and clear the form.
-        setSuccess('Registration successful! You can now log in.');
-        setFullName('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setRole('learner');
+      if (!response.ok) {
+        // If response is not OK (e.g., 400, 500), throw an error with the message from the backend
+        throw new Error(data.message || 'Registration failed due to an unknown error.');
+      }
+
+      // On successful registration
+      setSuccess('Registration successful! You can now log in.');
+      // Clear form fields
+      setFullName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setRole('learner'); // Reset role to default
 
     } catch (err) {
-        setError(err.message);
+      // Catch and display any errors during the fetch or from the backend
+      console.error("Registration API call error:", err);
+      setError(err.message || 'A network error occurred. Please try again.');
+    } finally {
+      setIsLoading(false); // Always stop loading, regardless of success or failure
     }
   };
 
-  // ... (rest of the component remains unchanged)
-}
-
+  // --- JSX RETURN BLOCK - MUST BE INSIDE THE COMPONENT FUNCTION ---
   return (
     // Main container with a gradient background, consistent with the login page
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      
       <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-xl flex flex-col md:flex-row">
-        
+
         {/* Left Side: Branding and Welcome Message */}
         <div className="w-full md:w-1/2 bg-blue-600 text-white p-8 md:p-12 flex flex-col justify-center items-center md:items-start rounded-t-2xl md:rounded-l-2xl md:rounded-r-none">
           <h1 className="text-3xl font-bold mb-3">Join the DDP Hub</h1>
           <p className="text-lg text-blue-100">Create your account to begin a new journey of strengths-based planning and collaboration. Let's build a more inclusive future, together.</p>
-           <div className="mt-8">
+          <div className="mt-8">
             <svg className="w-32 h-32 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
           </div>
         </div>
@@ -71,7 +113,7 @@ export default function App() {
           <p className="text-gray-600 mb-8">Let's get you started.</p>
 
           <form onSubmit={handleSubmit}>
-            
+
             {/* Full Name Input */}
             <div className="mb-4">
               <label htmlFor="fullName" className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
@@ -134,11 +176,11 @@ export default function App() {
                 Already have an account? <a href="/login" className="font-bold text-blue-500 hover:text-blue-800">Sign in here</a>.
               </p>
             </div>
-            
+
           </form>
         </div>
-        
+
       </div>
     </div>
   );
-
+} // <--- End of the RegisterPage function
