@@ -1,12 +1,13 @@
+import Link from 'next/link'; // Import Link for Next.js internal navigation
 import React, { useState } from 'react';
-// Assuming MailIcon and LockIcon are imported from a components folder or an icon library
-// You might need to adjust these imports based on your actual project structure
-import { MailIcon, LockIcon, UserIcon } from '../components/Icons'; // Example: if you have a custom Icons component
-// Or if using a library like @heroicons/react:
-// import { EnvelopeIcon as MailIcon, LockClosedIcon as LockIcon } from '@heroicons/react/24/outline';
+
+// --- Import Icons from the central Icons.js file ---
+// This assumes you have created and populated '../components/Icons.js'
+// with all the icon definitions (MailIcon, LockIcon, UserIcon, etc.).
+import { MailIcon, LockIcon, UserIcon } from '../components/Icons';
 
 
-export default function LoginPage() { // Renamed from App to LoginPage for clarity, assuming this is pages/login.js
+export default function LoginPage() { // Correct component name for pages/login.js
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,9 +24,13 @@ export default function LoginPage() { // Renamed from App to LoginPage for clari
       return;
     }
 
-    // --- UPDATED: API Call to the Back-End Login Endpoint ---
+    // --- API Call to the Back-End Login Endpoint ---
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      if (!apiUrl) {
+          throw new Error('API URL is not configured. Please set NEXT_PUBLIC_API_URL environment variable.');
+      }
+
       const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -37,22 +42,26 @@ export default function LoginPage() { // Renamed from App to LoginPage for clari
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Invalid credentials.');
+        // If 401 Unauthorized, it might mean token expired or invalid
+        if (response.status === 401) {
+            setError('Invalid credentials or session expired.');
+        } else {
+            throw new Error(data.message || 'Login failed due to an unknown error.');
+        }
+      } else {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        // Redirect on successful login using window.location.href for a full page reload
+        // Consider using Next.js useRouter for client-side navigation if preferred:
+        // import { useRouter } from 'next/router'; const router = useRouter(); router.push('/dashboard');
+        window.location.href = '/dashboard';
       }
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      // Redirect on successful login
-      window.location.href = '/dashboard'; // This will cause a full page reload
-
     } catch (err) {
-      setError(err.message);
-      setIsLoading(false);
+      console.error("Login API call error:", err);
+      setError(err.message || 'A network error occurred. Please try again.');
     } finally {
-      // Ensure loading state is reset even on success, before redirect
-      // (though redirect will make this less visible)
-      setIsLoading(false);
+      setIsLoading(false); // Ensure loading state is reset
     }
   };
 
@@ -66,7 +75,8 @@ export default function LoginPage() { // Renamed from App to LoginPage for clari
         {/* Left Side: Branding and Welcome Message */}
         <div className="w-full md:w-1/2 bg-blue-600 text-white p-8 md:p-12 flex flex-col justify-center items-center md:items-start rounded-t-2xl md:rounded-l-2xl md:rounded-r-none">
           <h1 className="text-3xl font-bold mb-3">The DDP Hub</h1>
-          <p className="text-lg text-blue-100">Welcome back. Let's continue to build a world where every learner is seen, valued, and empowered to thrive.</p>
+          {/* Corrected: Escaped single quote */}
+          <p className="text-lg text-blue-100">Welcome back. Let&apos;s continue to build a world where every learner is seen, valued, and empowered to thrive.</p>
           <div className="mt-8">
             <svg className="w-32 h-32 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
           </div>
@@ -138,13 +148,18 @@ export default function LoginPage() { // Renamed from App to LoginPage for clari
 
             {/* Links */}
             <div className="text-center">
+              {/* This link is currently '#' - if it's meant to go somewhere, replace '#' */}
               <a href="#" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
                 Forgot Password?
               </a>
             </div>
             <div className="text-center mt-4">
               <p className="text-gray-600 text-sm">
-                Don't have an account? <a href="/register" className="font-bold text-blue-500 hover:text-blue-800">Register here</a>.
+                Don&apos;t have an account? {/* Escaped quote */}
+                {/* Use Link for internal navigation */}
+                <Link href="/register" className="font-bold text-blue-500 hover:text-blue-800">
+                  Register here
+                </Link>
               </p>
             </div>
 
@@ -154,5 +169,4 @@ export default function LoginPage() { // Renamed from App to LoginPage for clari
       </div>
     </div>
   );
-} // <--- End of the LoginPage function
-
+} // End of the LoginPage function

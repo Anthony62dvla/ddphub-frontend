@@ -1,13 +1,13 @@
+import Link from 'next/link'; // Import Link for Next.js internal navigation
 import React, { useState } from 'react';
-// Assuming MailIcon, LockIcon, UserIcon are imported from a components folder or an icon library.
-// You need to adjust these imports based on your actual project structure.
-// Example: if you have a custom Icons component in '../components/Icons.js'
+
+// --- Import Icons from the central Icons.js file ---
+// This assumes you have created and populated '../components/Icons.js'
+// with all the icon definitions (MailIcon, LockIcon, UserIcon, etc.).
 import { MailIcon, LockIcon, UserIcon } from '../components/Icons';
-// Or if using a library like @heroicons/react:
-// import { EnvelopeIcon as MailIcon, LockClosedIcon as LockIcon, UserIcon } from '@heroicons/react/24/outline';
 
 
-export default function RegisterPage() { // Renamed from App to RegisterPage for clarity
+export default function RegisterPage() { // Correct component name for pages/register.js
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -101,7 +101,8 @@ export default function RegisterPage() { // Renamed from App to RegisterPage for
         {/* Left Side: Branding and Welcome Message */}
         <div className="w-full md:w-1/2 bg-blue-600 text-white p-8 md:p-12 flex flex-col justify-center items-center md:items-start rounded-t-2xl md:rounded-l-2xl md:rounded-r-none">
           <h1 className="text-3xl font-bold mb-3">Join the DDP Hub</h1>
-          <p className="text-lg text-blue-100">Create your account to begin a new journey of strengths-based planning and collaboration. Let's build a more inclusive future, together.</p>
+          {/* Corrected: Escaped single quote */}
+          <p className="text-lg text-blue-100">Create your account to begin a new journey of strengths-based planning and collaboration. Let&apos;s build a more inclusive future, together.</p>
           <div className="mt-8">
             <svg className="w-32 h-32 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
           </div>
@@ -110,7 +111,8 @@ export default function RegisterPage() { // Renamed from App to RegisterPage for
         {/* Right Side: Registration Form */}
         <div className="w-full md:w-1/2 p-8 md:p-12">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Create Your Account</h2>
-          <p className="text-gray-600 mb-8">Let's get you started.</p>
+          {/* Corrected: Escaped single quote */}
+          <p className="text-gray-600 mb-8">Let&apos;s get you started.</p>
 
           <form onSubmit={handleSubmit}>
 
@@ -172,8 +174,13 @@ export default function RegisterPage() { // Renamed from App to RegisterPage for
 
             {/* Link to Login */}
             <div className="text-center">
+              {/* Corrected: Escaped single quote */}
               <p className="text-gray-600 text-sm">
-                Already have an account? <a href="/login" className="font-bold text-blue-500 hover:text-blue-800">Sign in here</a>.
+                Already have an account? {/* Escaped quote */}
+                {/* Use Link for internal navigation */}
+                <Link href="/login" className="font-bold text-blue-500 hover:text-blue-800">
+                  Sign in here
+                </Link>
               </p>
             </div>
 
