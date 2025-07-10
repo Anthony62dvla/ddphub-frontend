@@ -9,6 +9,7 @@
 
 @layer base {
   body {
+    /* stylelint-disable-next-line */
     @apply bg-[var(--background)] text-[var(--foreground)] font-sans;
   }
 }
