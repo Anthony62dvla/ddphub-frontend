@@ -1,4 +1,3 @@
-import { EditIcon } from '../../components/Icons';
 import { UserCircleIcon, ChevronDownIcon, PlusIcon, EditIcon } from '../../components/Icons';
 import InviteContributorModal from '../../components/InviteContributorModal';
 import DDPSection from '../../components/DDPSection';
