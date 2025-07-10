@@ -1,4 +1,4 @@
-import { UserCircleIcon, ChevronDownIcon, PlusIcon } from '../components/Icons';
+import { UserCircleIcon, ChevronDownIcon, PlusIcon, EditIcon } from '../components/Icons';
 import Link from 'next/link'; // Import Link for Next.js internal navigation
 import React, { useState, useEffect } from 'react';
 // Import useRouter for client-side navigation within Next.js
