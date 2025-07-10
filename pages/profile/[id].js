@@ -1,3 +1,4 @@
+import { UserCircleIcon, ChevronDownIcon, PlusIcon, EditIcon } from '../components/Icons';
 import Link from 'next/link'; // Import Link for Next.js internal navigation
 import React, { useState, useEffect } from 'react';
 // Import useRouter for client-side navigation within Next.js
@@ -6,7 +7,6 @@ import { useRouter } from 'next/router';
 // --- Import Icons from the central Icons.js file ---
 // This assumes you have created and populated '../components/Icons.js'
 // with all the icon definitions (UserCircleIcon, ChevronDownIcon, PlusIcon, EditIcon).
-import { UserCircleIcon, ChevronDownIcon, PlusIcon, EditIcon } from '../components/Icons';
 
 
 // --- Import Reusable Components from their new files ---
