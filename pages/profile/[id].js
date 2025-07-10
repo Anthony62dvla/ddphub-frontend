@@ -1,6 +1,7 @@
-import { UserCircleIcon, ChevronDownIcon, PlusIcon, EditIcon } from '../components/Icons';
-import InviteContributorModal from '../components/InviteContributorModal';
-import DDPSection from '../components/DDPSection'; // <--- DDPSection is now imported from its own file
+import { EditIcon } from '../../components/Icons';
+import { UserCircleIcon, ChevronDownIcon, PlusIcon, EditIcon } from '../../components/Icons';
+import InviteContributorModal from '../../components/InviteContributorModal';
+import DDPSection from '../../components/DDPSection';
 import Link from 'next/link'; // Import Link for Next.js internal navigation
 import React, { useState, useEffect } from 'react';
 // Import useRouter for client-side navigation within Next.js
