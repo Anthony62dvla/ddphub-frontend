@@ -1,6 +1,7 @@
 {
   "name": "ddphub-app",
   "version": "1.0.0",
+  "type": "module",
   "description": "This is a Next.js project bootstrapped with create-next-app.",
   "dependencies": {
     "next": "latest",
